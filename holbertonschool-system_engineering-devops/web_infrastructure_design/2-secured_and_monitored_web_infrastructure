@@ -1,0 +1,25 @@
+digraph secured_monitored {
+	rankdir=TB
+	user [label=User shape=ellipse]
+	fw_lb [label="Firewall 1" shape=box]
+	lb [label="Load Balancer (HAproxy)
++ SSL Certificate
++ Monitoring Client" shape=box]
+	s1 [label="Firewall 2 + Server 1
+- Nginx, App, Code
+- MySQL (Primary)
++ Monitoring Client" shape=box]
+	s2 [label="Firewall 3 + Server 2
+- Nginx, App, Code
+- MySQL (Replica)
++ Monitoring Client" shape=box]
+	monitor [label="Monitoring Service
+(e.g., SumoLogic)" fillcolor=lightgrey shape=ellipse style=filled]
+	user -> fw_lb [label=HTTPS]
+	fw_lb -> lb
+	lb -> s1
+	lb -> s2
+	lb -> monitor [style=dashed]
+	s1 -> monitor [style=dashed]
+	s2 -> monitor [style=dashed]
+}

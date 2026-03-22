@@ -1,0 +1,18 @@
+digraph distributed_web {
+	rankdir=TB
+	user [label=User shape=ellipse]
+	lb [label="Load Balancer (HAproxy)" shape=box]
+	s1 [label="Server 1
+- Nginx
+- App Server
+- Codebase
+- MySQL (Primary)" shape=box]
+	s2 [label="Server 2
+- Nginx
+- App Server
+- Codebase
+- MySQL (Replica)" shape=box]
+	user -> lb [label="www.foobar.com"]
+	lb -> s1 [label=Active]
+	lb -> s2 [label="Active / Passive"]
+}

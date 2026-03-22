@@ -1,0 +1,12 @@
+digraph simple_web_stack {
+	rankdir=LR
+	user [label=User shape=ellipse]
+	server [label="Server (8.8.8.8)
+
+- Web Server (Nginx)
+- App Server
+- Codebase
+- Database (MySQL)" shape=box]
+	user -> server [label="www.foobar.com
+HTTP"]
+}
