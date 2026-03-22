@@ -1,12 +1,14 @@
-digraph simple_web_stack {
-	rankdir=LR
-	user [label=User shape=ellipse]
-	server [label="Server (8.8.8.8)
+https://i.imgur.com/666qZly.png
 
-- Web Server (Nginx)
-- App Server
-- Codebase
-- Database (MySQL)" shape=box]
-	user -> server [label="www.foobar.com
-HTTP"]
-}
+- What is a server: A computer or program that provides data and functionality to other devices (clients).
+- What is the role of the domain name: It provides a human-readable address (like foobar.com) mapped to an IP address.
+- What type of DNS record www is in www.foobar.com: It is typically a CNAME record pointing to the root domain, or an A record pointing directly to the IP.
+- What is the role of the web server: To serve static content (HTML, CSS, JS) via HTTP requests (e.g., Nginx).
+- What is the role of the application server: To execute dynamic business logic and application code.
+- What is the role of the database: To store, manage, and retrieve structured data (e.g., MySQL).
+- What is the server using to communicate with the computer of the user: TCP/IP and HTTP protocols.
+
+Issues:
+- SPOF: There is a Single Point of Failure. If this one server crashes, the entire website goes down.
+- Downtime when maintenance needed: Restarting the web server or deploying code requires stopping the service, causing downtime.
+- Cannot scale if too much incoming traffic: A single server has limited hardware resources (CPU/RAM) and will crash under heavy load.

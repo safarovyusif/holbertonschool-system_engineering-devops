@@ -1,25 +1,16 @@
-digraph secured_monitored {
-	rankdir=TB
-	user [label=User shape=ellipse]
-	fw_lb [label="Firewall 1" shape=box]
-	lb [label="Load Balancer (HAproxy)
-+ SSL Certificate
-+ Monitoring Client" shape=box]
-	s1 [label="Firewall 2 + Server 1
-- Nginx, App, Code
-- MySQL (Primary)
-+ Monitoring Client" shape=box]
-	s2 [label="Firewall 3 + Server 2
-- Nginx, App, Code
-- MySQL (Replica)
-+ Monitoring Client" shape=box]
-	monitor [label="Monitoring Service
-(e.g., SumoLogic)" fillcolor=lightgrey shape=ellipse style=filled]
-	user -> fw_lb [label=HTTPS]
-	fw_lb -> lb
-	lb -> s1
-	lb -> s2
-	lb -> monitor [style=dashed]
-	s1 -> monitor [style=dashed]
-	s2 -> monitor [style=dashed]
-}
+https://i.imgur.com/JWz3f8z.png
+
+- For every additional element, why you are adding it:
+  - Firewalls: To secure the network by blocking unauthorized access.
+  - SSL certificate: To encrypt traffic.
+  - Monitoring clients: To track system health and performance.
+- What are firewalls for: To filter incoming and outgoing network traffic based on predetermined security rules.
+- Why is the traffic served over HTTPS: To encrypt the data between the user's browser and the server, ensuring privacy and security.
+- What monitoring is used for: To collect metrics (CPU, memory, logs), detect failures, and send alerts.
+- How the monitoring tool is collecting data: By using an agent/client installed on the server that pushes system metrics to a centralized monitoring service.
+- How to monitor web server QPS: By analyzing the web server (Nginx) access logs to count the number of HTTP requests processed per second.
+
+Issues:
+- Why terminating SSL at the load balancer level is an issue: Traffic between the load balancer and the internal servers is sent unencrypted, which is a security risk if the internal network is compromised.
+- Why having only one MySQL server capable of accepting writes is an issue: It acts as a bottleneck for write-heavy operations and remains a SPOF for data modifications.
+- Why having servers with all the same components is a problem: Web, App, and DB components compete for the same server resources (CPU/RAM), making it impossible to scale them independently based on their specific needs.

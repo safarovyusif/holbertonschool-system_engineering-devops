@@ -1,37 +1,5 @@
-digraph scale_up {
-	rankdir=TB
-	user [label=User shape=ellipse]
-	subgraph cluster_lb {
-		label="Load Balancer Cluster"
-		lb1 [label="HAproxy 1" shape=box]
-		lb2 [label="HAproxy 2" shape=box]
-	}
-	subgraph cluster_web {
-		label="Web Servers"
-		web1 [label="Nginx 1" shape=box]
-		web2 [label="Nginx 2" shape=box]
-	}
-	subgraph cluster_app {
-		label="Application Servers"
-		app1 [label="App Server 1" shape=box]
-		app2 [label="App Server 2" shape=box]
-	}
-	subgraph cluster_db {
-		label="Database Servers"
-		db1 [label="MySQL (Primary)" shape=box]
-		db2 [label="MySQL (Replica)" shape=box]
-	}
-	user -> lb1
-	user -> lb2
-	lb1 -> web1
-	lb1 -> web2
-	lb2 -> web1
-	lb2 -> web2
-	web1 -> app1
-	web1 -> app2
-	web2 -> app1
-	web2 -> app2
-	app1 -> db1
-	app2 -> db1
-	db1 -> db2 [label=Replication style=dashed]
-}
+https://i.imgur.com/fZwguAP.png
+
+- For every additional element, why you are adding it:
+  - Load-balancer cluster: Adding a second load balancer configured in a cluster eliminates the Load Balancer as a Single Point of Failure.
+  - Split components: Separating the Web server, Application server, and Database into their own dedicated servers allows each layer to be scaled independently. For example, if database queries are slow, we can upgrade just the database servers without affecting the web servers. It also prevents components from fighting for the same CPU and memory resources.

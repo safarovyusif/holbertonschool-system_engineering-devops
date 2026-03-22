@@ -1,18 +1,16 @@
-digraph distributed_web {
-	rankdir=TB
-	user [label=User shape=ellipse]
-	lb [label="Load Balancer (HAproxy)" shape=box]
-	s1 [label="Server 1
-- Nginx
-- App Server
-- Codebase
-- MySQL (Primary)" shape=box]
-	s2 [label="Server 2
-- Nginx
-- App Server
-- Codebase
-- MySQL (Replica)" shape=box]
-	user -> lb [label="www.foobar.com"]
-	lb -> s1 [label=Active]
-	lb -> s2 [label="Active / Passive"]
-}
+https://i.imgur.com/Mtz2I85.png
+
+- For every additional element, why you are adding it: 
+  - Load balancer: To distribute incoming traffic across multiple servers.
+  - Extra server: To provide redundancy and handle more traffic.
+- Distribution algorithm: Round Robin. It distributes client requests sequentially to each server in the pool, ensuring equal load.
+- Active-Active vs Active-Passive: 
+  - Active-Active: Both servers handle traffic simultaneously.
+  - Active-Passive: One server handles traffic while the other is on standby, taking over only if the primary fails.
+- Database Primary-Replica cluster: The Primary node handles all write operations, and data is copied to Replica nodes. Replicas handle read operations to reduce load on the primary.
+- Difference between Primary and Replica: Primary handles both reads and writes. Replica is strictly read-only.
+
+Issues:
+- SPOF: The Load Balancer is now the Single Point of Failure. If HAProxy dies, no traffic reaches the servers.
+- Security issues: There is no firewall to block malicious traffic, and no HTTPS, so traffic is unencrypted and can be intercepted.
+- No monitoring: We have no way of knowing if a server crashes or if resources (CPU/RAM) are maxed out until users complain.
